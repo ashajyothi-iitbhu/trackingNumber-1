@@ -15,7 +15,23 @@ class trackingNumber {
 		this.deleted = false;
 	}
 	
-	public List<trackingNumber> compare(trackingNumber anotherTrackingNumber) {
+	public List<trackingNumber> compare(trackingNumber anotherTrackingNumber) 
+	{
+		Range.Relation relation  = this.r.classify(anotherTrackingNumber.getR());
 		return null;
 	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public Range getR() {
+		return r;
+	}
+
+	
 }

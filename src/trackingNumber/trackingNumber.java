@@ -1,4 +1,4 @@
-package TrackingNumber;
+package trackingNumber;
 
 import java.util.*;
 
@@ -26,6 +26,18 @@ class TrackingNumber {
 		{
 			anotherTrackingNumber.setDeleted(true);
 			newTrackingNumberRows.add(this);
+		}
+		else if(relation==Relation.LESSDISJOINT||relation==Relation.MOREDISJOINT)
+		{
+			return null;
+		}
+		else if(relation==Relation.SUPERSET)
+		{
+			this.setDeleted(true);
+			newTrackingNumberRows.add(new TrackingNumber(this.r.getLo(), anotherTrackingNumber.getR().getLo()-1, this.statusCode, this.transferCode));
+			newTrackingNumberRows.add(anotherTrackingNumber);
+			newTrackingNumberRows.add(new TrackingNumber(anotherTrackingNumber.getR().getHi()+1, this.r.getHi(), this.statusCode, this.transferCode));
+			
 		}
 		return newTrackingNumberRows;
 	}

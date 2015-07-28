@@ -46,4 +46,18 @@ public class Range {
             return Relation.LESSOVERLAP;
         return Relation.MOREOVERLAP;
     }
+	public int getLo() {
+		return lo;
+	}
+	public void setLo(int lo) {
+		this.lo = lo;
+	}
+	public int getHi() {
+		return hi;
+	}
+	public void setHi(int hi) {
+		this.hi = hi;
+	}
+    
+    
 }

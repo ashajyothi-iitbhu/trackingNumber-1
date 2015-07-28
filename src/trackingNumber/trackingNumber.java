@@ -1,24 +1,33 @@
-package trackingNumber;
+package TrackingNumber;
 
 import java.util.*;
 
-class trackingNumber {
+import trackingNumber.Range.Relation;
+
+class TrackingNumber {
 	private char statusCode;
 	private char transferCode;
 	private Range r;
 	private boolean deleted;
 	
-	public trackingNumber(int low, int high, char status_code, char transfer_code) {
+	public TrackingNumber(int low, int high, char status_code, char transfer_code) {
 		this.statusCode = status_code;
 		this.transferCode = transfer_code;
-		Range trackingNumberRange = new Range(low, high);
+		Range TrackingNumberRange = new Range(low, high);
 		this.deleted = false;
 	}
 	
-	public List<trackingNumber> compare(trackingNumber anotherTrackingNumber) 
+	public List<TrackingNumber> compare(TrackingNumber anotherTrackingNumber) 
 	{
-		Range.Relation relation  = this.r.classify(anotherTrackingNumber.getR());
-		return null;
+		List<TrackingNumber> newTrackingNumberRows = new ArrayList<TrackingNumber>();
+		
+		Relation relation  = this.r.classify(anotherTrackingNumber.getR());
+		if(relation==Relation.SAME)
+		{
+			anotherTrackingNumber.setDeleted(true);
+			newTrackingNumberRows.add(this);
+		}
+		return newTrackingNumberRows;
 	}
 
 	public boolean isDeleted() {
@@ -31,6 +40,22 @@ class trackingNumber {
 
 	public Range getR() {
 		return r;
+	}
+
+	public char getStatusCode() {
+		return statusCode;
+	}
+
+	public void setStatusCode(char statusCode) {
+		this.statusCode = statusCode;
+	}
+
+	public char getTransferCode() {
+		return transferCode;
+	}
+
+	public void setTransferCode(char transferCode) {
+		this.transferCode = transferCode;
 	}
 
 	

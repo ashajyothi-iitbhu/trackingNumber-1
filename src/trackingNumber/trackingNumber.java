@@ -39,6 +39,11 @@ class TrackingNumber {
 			newTrackingNumberRows.add(new TrackingNumber(anotherTrackingNumber.getR().getHi()+1, this.r.getHi(), this.statusCode, this.transferCode));
 			
 		}
+		else if(relation==Relation.SUBSET)
+		{
+			this.setDeleted(true);
+			newTrackingNumberRows.add(anotherTrackingNumber);
+		}
 		return newTrackingNumberRows;
 	}
 

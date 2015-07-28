@@ -7,25 +7,25 @@ import trackingNumber.Range.Relation;
 class TrackingNumber {
 	private char statusCode;
 	private char transferCode;
-	private Range r;
+	private Range TrackingNumberRange;
 	private boolean deleted;
 	
 	public TrackingNumber(int low, int high, char status_code, char transfer_code) {
 		this.statusCode = status_code;
 		this.transferCode = transfer_code;
-		Range TrackingNumberRange = new Range(low, high);
+		TrackingNumberRange = new Range(low, high);
 		this.deleted = false;
 	}
 	
 	public String findStringFromTrackingNumber(){
-		return r.getLo() + " "+r.getHi() + " "+this.statusCode + " "+this.transferCode;
+		return TrackingNumberRange.getLo() + " "+TrackingNumberRange.getHi() + " "+this.statusCode + " "+this.transferCode;
 	}
 	
 	public List<TrackingNumber> compare(TrackingNumber anotherTrackingNumber) 
 	{
 		List<TrackingNumber> newTrackingNumberRows = new ArrayList<TrackingNumber>();
 		
-		Relation relation  = this.r.classify(anotherTrackingNumber.getR());
+		Relation relation  = this.TrackingNumberRange.classify(anotherTrackingNumber.getR());
 		if(relation==Relation.SAME)
 		{
 			anotherTrackingNumber.setDeleted(true);
@@ -38,9 +38,9 @@ class TrackingNumber {
 		else if(relation==Relation.SUPERSET)
 		{
 			this.setDeleted(true);
-			newTrackingNumberRows.add(new TrackingNumber(this.r.getLo(), anotherTrackingNumber.getR().getLo()-1, this.statusCode, this.transferCode));
+			newTrackingNumberRows.add(new TrackingNumber(this.TrackingNumberRange.getLo(), anotherTrackingNumber.getR().getLo()-1, this.statusCode, this.transferCode));
 			newTrackingNumberRows.add(anotherTrackingNumber);
-			newTrackingNumberRows.add(new TrackingNumber(anotherTrackingNumber.getR().getHi()+1, this.r.getHi(), this.statusCode, this.transferCode));
+			newTrackingNumberRows.add(new TrackingNumber(anotherTrackingNumber.getR().getHi()+1, this.TrackingNumberRange.getHi(), this.statusCode, this.transferCode));
 			
 		}
 		else if(relation==Relation.SUBSET)
@@ -52,7 +52,7 @@ class TrackingNumber {
 		{
 			this.setDeleted(true);
 			newTrackingNumberRows.add(anotherTrackingNumber);
-			newTrackingNumberRows.add(new TrackingNumber(anotherTrackingNumber.getR().getHi()+1, this.r.getHi(), this.statusCode, this.transferCode));
+			newTrackingNumberRows.add(new TrackingNumber(anotherTrackingNumber.getR().getHi()+1, this.TrackingNumberRange.getHi(), this.statusCode, this.transferCode));
 			
 		}
 		else if(relation==Relation.MOREOVERLAP)
@@ -73,7 +73,7 @@ class TrackingNumber {
 	}
 
 	public Range getR() {
-		return r;
+		return TrackingNumberRange;
 	}
 
 	public char getStatusCode() {

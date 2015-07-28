@@ -17,6 +17,10 @@ class TrackingNumber {
 		this.deleted = false;
 	}
 	
+	public String findStringFromTrackingNumber(){
+		return r.getLo() + " "+r.getHi() + " "+this.statusCode + " "+this.transferCode;
+	}
+	
 	public List<TrackingNumber> compare(TrackingNumber anotherTrackingNumber) 
 	{
 		List<TrackingNumber> newTrackingNumberRows = new ArrayList<TrackingNumber>();

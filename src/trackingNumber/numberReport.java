@@ -2,22 +2,25 @@ package trackingNumber;
 
 import java.util.*;
 
-public class numberReport {
+class TrackingNumberReport {
 	private String caseName;
 	private List<TrackingNumber> trackingNumberList;
 	
 	
-	public numberReport(String case_name) {
+	public TrackingNumberReport(String case_name) {
 		this.caseName = case_name;
 		this.trackingNumberList = new ArrayList<TrackingNumber>();
 	}
 	
 	public List<String> returnReport() {
 		List<String> finalList = new ArrayList<String>();
-		finalList.add(0,caseName);
 		for(TrackingNumber t : trackingNumberList){
-		    finalList.add(t.findStringFromTrackingNumber());
+			if (!t.isDeleted()) {
+		    	finalList.add(t.findStringFromTrackingNumber());
+			}
 		}
+		Collections.sort(finalList);
+		finalList.add(0,caseName);
 		return finalList;
 	}
 	
@@ -30,14 +33,27 @@ public class numberReport {
 		char transferCode = tupleArray[3].charAt(0);
 		
 		TrackingNumber tN = new TrackingNumber(low,high,statusCode,transferCode);
-		trackingNumberList.add(tN);
-		for(TrackingNumber t : trackingNumberList){
-			if(!t.isDeleted()){
-				if(tN.compare(t)!=null)		
-			trackingNumberList.addAll(tN.compare(t));
-			}
-		}
-		
+		checkRangeAndStatus(tN);
 	}
 	
+	private void checkRangeAndStatus(TrackingNumber tN) {
+		List<TrackingNumber> mutatedList = new ArrayList<TrackingNumber>();
+		for(TrackingNumber t : trackingNumberList){
+			if (tN.isDeleted()) {
+				break;
+			} else if(!t.isDeleted()) {
+				mutatedList.addAll(tN.compare(t));
+			}
+		}
+		if (mutatedList != null) {
+			for(TrackingNumber newTN : mutatedList) {
+				checkRangeAndStatus(newTN);
+			}
+			trackingNumberList.removeAll(mutatedList);
+			trackingNumberList.addAll(mutatedList);
+		}
+		if (!tN.isDeleted() && !trackingNumberList.contains(tN)) {
+			trackingNumberList.add(tN);
+		}	
+	}
 }

@@ -29,37 +29,45 @@ class TrackingNumber {
 		if(relation==Relation.SAME)
 		{
 			anotherTrackingNumber.setDeleted(true);
-			newTrackingNumberRows.add(this);
-		}
-		else if(relation==Relation.LESSDISJOINT||relation==Relation.MOREDISJOINT)
-		{
-			return null;
+			//newTrackingNumberRows.add(this);
 		}
 		else if(relation==Relation.SUPERSET)
 		{
-			this.setDeleted(true);
-			newTrackingNumberRows.add(new TrackingNumber(this.TrackingNumberRange.getLo(), anotherTrackingNumber.getR().getLo()-1, this.statusCode, this.transferCode));
-			newTrackingNumberRows.add(anotherTrackingNumber);
-			newTrackingNumberRows.add(new TrackingNumber(anotherTrackingNumber.getR().getHi()+1, this.TrackingNumberRange.getHi(), this.statusCode, this.transferCode));
+			anotherTrackingNumber.setDeleted(true);
+			//newTrackingNumberRows.add(new TrackingNumber(this.TrackingNumberRange.getLo(), anotherTrackingNumber.getR().getLo()-1, this.statusCode, this.transferCode));
+			//newTrackingNumberRows.add(anotherTrackingNumber);
+			//newTrackingNumberRows.add(new TrackingNumber(anotherTrackingNumber.getR().getHi()+1, this.TrackingNumberRange.getHi(), this.statusCode, this.transferCode));
 			
 		}
-		else if(relation==Relation.SUBSET)
+		else if (relation==Relation.SUBSET)
 		{
-			this.setDeleted(true);
-			newTrackingNumberRows.add(anotherTrackingNumber);
+			if (this.statusCode == anotherTrackingNumber.statusCode && this.transferCode == anotherTrackingNumber.transferCode) {
+				this.setDeleted(true);
+			} else {
+				this.setDeleted(true);
+				anotherTrackingNumber.setDeleted(true);
+				newTrackingNumberRows.add(new TrackingNumber(anotherTrackingNumber.getR().getLo(), this.getR().getLo()-1, anotherTrackingNumber.statusCode, anotherTrackingNumber.transferCode));
+				newTrackingNumberRows.add(new TrackingNumber(this.getR().getLo(), this.getR().getHi(), this.statusCode, this.transferCode));
+				newTrackingNumberRows.add(new TrackingNumber(this.getR().getHi()+1, anotherTrackingNumber.getR().getHi(), anotherTrackingNumber.statusCode, anotherTrackingNumber.transferCode));
+			}
+			//newTrackingNumberRows.add(anotherTrackingNumber);
 		}
 		else if(relation == Relation.LESSOVERLAP)
 		{
 			this.setDeleted(true);
-			newTrackingNumberRows.add(anotherTrackingNumber);
-			newTrackingNumberRows.add(new TrackingNumber(anotherTrackingNumber.getR().getHi()+1, this.TrackingNumberRange.getHi(), this.statusCode, this.transferCode));
+			anotherTrackingNumber.setDeleted(true);
+			//newTrackingNumberRows.add(anotherTrackingNumber);
+			newTrackingNumberRows.add(new TrackingNumber(this.getR().getLo(), this.getR().getHi(), this.statusCode, this.transferCode));
+			newTrackingNumberRows.add(new TrackingNumber(this.getR().getHi()+1, anotherTrackingNumber.getR().getHi(), anotherTrackingNumber.statusCode, anotherTrackingNumber.transferCode));
 			
 		}
 		else if(relation==Relation.MOREOVERLAP)
 		{
 			this.setDeleted(true);
-			newTrackingNumberRows.add(anotherTrackingNumber);
-			newTrackingNumberRows.add(new TrackingNumber(this.getR().getLo(), anotherTrackingNumber.getR().getLo()-1, this.statusCode, this.transferCode));
+			anotherTrackingNumber.setDeleted(true);
+			//newTrackingNumberRows.add(anotherTrackingNumber);
+			newTrackingNumberRows.add(new TrackingNumber(anotherTrackingNumber.getR().getLo(), this.getR().getLo()-1, anotherTrackingNumber.statusCode, anotherTrackingNumber.transferCode));
+			newTrackingNumberRows.add(new TrackingNumber(this.getR().getLo(), this.getR().getHi(), this.statusCode, this.transferCode));
 		}
 		return newTrackingNumberRows;
 	}

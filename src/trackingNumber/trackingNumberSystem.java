@@ -10,15 +10,17 @@ public class trackingNumberSystem {
 		String currentLine = "";
 		List<String> reportList = new ArrayList<String>();
 		currentLine = inputReader.nextLine();
-		numberReport reportGenerator = new numberReport(currentLine);
+		TrackingNumberReport reportGenerator = new TrackingNumberReport(currentLine);
 		while((currentLine = inputReader.nextLine()) != null) {
-			if (currentLine.equals("END")) {
-				reportList.addAll(reportGenerator.returnReport());
-				printReport(reportList);
-			} else if (currentLine.equals("0")) {
+			 if (currentLine.equals("0")) {
 				reportList.addAll(reportGenerator.returnReport());
 				currentLine = inputReader.nextLine();
-				reportGenerator = new numberReport(currentLine);
+				if (currentLine.equals("END")) {
+					printReport(reportList);
+					inputReader.close();
+					break;
+				}
+				reportGenerator = new TrackingNumberReport(currentLine);
 			} else {
 				reportGenerator.generateTuple(currentLine);
 			}

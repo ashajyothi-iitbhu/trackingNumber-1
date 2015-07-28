@@ -44,6 +44,19 @@ class TrackingNumber {
 			this.setDeleted(true);
 			newTrackingNumberRows.add(anotherTrackingNumber);
 		}
+		else if(relation == Relation.LESSOVERLAP)
+		{
+			this.setDeleted(true);
+			newTrackingNumberRows.add(anotherTrackingNumber);
+			newTrackingNumberRows.add(new TrackingNumber(anotherTrackingNumber.getR().getHi()+1, this.r.getHi(), this.statusCode, this.transferCode));
+			
+		}
+		else if(relation==Relation.MOREOVERLAP)
+		{
+			this.setDeleted(true);
+			newTrackingNumberRows.add(anotherTrackingNumber);
+			newTrackingNumberRows.add(new TrackingNumber(this.getR().getLo(), anotherTrackingNumber.getR().getLo()-1, this.statusCode, this.transferCode));
+		}
 		return newTrackingNumberRows;
 	}
 
